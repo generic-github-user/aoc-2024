@@ -12,3 +12,5 @@ main = do
   let spans_a = getSpans grid
   let spans_b = spans_a ++ map reverse spans_a
   print $ sum $ map (occurrences "XMAS") spans_b
+
+
