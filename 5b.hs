@@ -9,6 +9,7 @@ getOrder order x y = if member (x, y) order then LT else if member (y, x) order 
 middle xs = xs !! (length xs `div` 2)
 main = do
   (order, updates) <- parse . lines <$> readFile "./5.txt"
-  print $ sum $ map middle $ filter (\u -> sortBy (getOrder order) u == u) updates
+  let s = sortBy (getOrder order)
+  print $ sum $ map middle $ map s $ filter (\u -> s u /= u) updates
 
 
