@@ -20,6 +20,18 @@ step grid (pos, dir) = let n = pos <+> dir in do
   v <- grid !? n
   return $ if v == '#' then let r = rotate dir in (pos <+> r, r) else (n, dir)
 
+-- arrayToStringWithNewlines arr = 
+  -- let ((rStart, cStart), (rEnd, cEnd)) = bounds arr
+      -- rows = [[arr ! (r, c) | c <- [cStart..cEnd]] | r <- [rStart..rEnd]]
+  -- in intercalate "\n" (map concat rows)
+arrayToStringWithNewlines :: Array (Int, Int) Char -> String
+arrayToStringWithNewlines arr =
+  let ((rStart, cStart), (rEnd, cEnd)) = bounds arr
+      rows = [[arr ! (r, c) | c <- [cStart..cEnd]] | r <- [rStart..rEnd]]
+  in unlines rows
+gen :: Array Index Char -> [(Index, Dir)] -> Index -> Char
+gen grid trace (x, y) = if (x, y) `elem` (map fst trace) then 'X' else grid ! (x, y)
+
 main = do
   grid <- mkArray . lines <$> readFile "./6-test.txt"
   -- print $ mkArray [[1, 2], [3, 4]]

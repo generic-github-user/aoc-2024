@@ -1,5 +1,5 @@
 import Data.Array
-import Data.Array.IArray ((!?))
+import Data.Array.IArray ((!?), genArray)
 import Data.Set (Set, size, fromList)
 import Data.List
 
@@ -18,5 +18,7 @@ step grid (pos, dir) = let n = pos <+> dir in do
 
 main = do
   grid <- mkArray . lines <$> readFile "./6.txt"
-  let trace = repeatedly (step grid) ((findStart grid), (0, -1))
+  let start = ((findStart grid), (0, -1))
+  let trace = start : repeatedly (step grid) start
   print $ size (fromList (map fst trace))
+  print $ (genArray (bounds grid) (gen grid trace)) ! (5, 5)
