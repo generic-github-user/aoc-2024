@@ -21,4 +21,3 @@ main = do
   let start = ((findStart grid), (0, -1))
   let trace = start : repeatedly (step grid) start
   print $ size (fromList (map fst trace))
-  print $ (genArray (bounds grid) (gen grid trace)) ! (5, 5)
