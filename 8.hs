@@ -2,7 +2,7 @@ import Data.List
 import Data.Tuple
 import Data.Array
 import Data.Array.IArray ((!?), genArray)
-import Data.Set (Set, size, fromList, unions)
+import Data.Set (Set, size, fromList, unions, empty)
 import qualified Data.Set as S
 import qualified Data.Map as M
 
@@ -13,8 +13,10 @@ findAll x = map fst . filter ((== x) . snd)
 -- combinations n xs = filter ((== n) . length . nub) (sequence (replicate n xs))
 -- combinations xs = concat $ map (zipWith (\a b -> [a, b]) xs) (tail (tails xs))
 combinations xs = concat $ map (zipWith (,) xs) (tail (tails xs))
-antinodes m letter = fromList $ concatMap (\(a, b) -> let d = b <-> a
-   in [a <-> d, b <+> d]) (combinations $ m M.! letter)
+antinodes m letter = case (M.lookup letter m) of
+  Just v -> (fromList $ concatMap (\(a, b) ->
+    let d = b <-> a in [a <-> d, b <+> d]) (combinations v))
+  Nothing -> empty
 
 main = do
   grid <- mkArray . lines <$> readFile "./8.txt"
